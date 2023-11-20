@@ -1,5 +1,5 @@
 {
-  "name": "wearesho-team/yii2-simple-cache-adapter",
+  "name": "aivchen/yii2-simple-cache-adapter",
   "license": "MIT",
   "type": "yii2-extension",
   "authors": [
@@ -9,6 +9,10 @@
     },
     {
       "name": "Alexander Letnikow",
+      "email": "reclamme@gmail.com"
+    },
+    {
+      "name": "Andrew Ivchenkov",
       "email": "reclamme@gmail.com"
     }
   ],
