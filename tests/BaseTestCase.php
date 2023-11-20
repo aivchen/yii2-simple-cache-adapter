@@ -34,11 +34,6 @@ abstract class BaseTestCase extends TestCase
     {
         return [
             [''],
-            [true],
-            [false],
-            [null],
-            [2],
-            [2.5],
             ['{str'],
             ['rand{'],
             ['rand{str'],
@@ -49,27 +44,6 @@ abstract class BaseTestCase extends TestCase
             ['rand\\str'],
             ['rand@str'],
             ['rand:str'],
-            [new \stdClass()],
-            [['array']],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public static function invalidTtl()
-    {
-        return [
-            [''],
-            [true],
-            [false],
-            ['abc'],
-            [2.5],
-            [' 1'], // can be casted to a int
-            ['12foo'], // can be casted to a int
-            ['025'], // can be interpreted as hex
-            [new \stdClass()],
-            [['array']],
         ];
     }
 
@@ -382,18 +356,6 @@ abstract class BaseTestCase extends TestCase
     }
 
     /**
-     */
-    public function testGetMultipleNoIterable()
-    {
-        $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
-        if (isset($this->skippedTests[__FUNCTION__])) {
-            $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
-        }
-
-        $result = $this->cache->getMultiple('key');
-    }
-
-    /**
      * @dataProvider invalidKeys
      */
     public function testSetInvalidKeys($key)
@@ -426,18 +388,6 @@ abstract class BaseTestCase extends TestCase
             yield 'key2' => 'baz';
         };
         $this->cache->setMultiple($values());
-    }
-
-    /**
-     */
-    public function testSetMultipleNoIterable()
-    {
-        $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
-        if (isset($this->skippedTests[__FUNCTION__])) {
-            $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
-        }
-
-        $this->cache->setMultiple('key');
     }
 
     /**
@@ -477,44 +427,6 @@ abstract class BaseTestCase extends TestCase
         }
 
         $this->cache->deleteMultiple(['key1', $key, 'key2']);
-    }
-
-    /**
-     */
-    public function testDeleteMultipleNoIterable()
-    {
-        $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
-        if (isset($this->skippedTests[__FUNCTION__])) {
-            $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
-        }
-
-        $this->cache->deleteMultiple('key');
-    }
-
-    /**
-     * @dataProvider invalidTtl
-     */
-    public function testSetInvalidTtl($ttl)
-    {
-        $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
-        if (isset($this->skippedTests[__FUNCTION__])) {
-            $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
-        }
-
-        $this->cache->set('key', 'value', $ttl);
-    }
-
-    /**
-     * @dataProvider invalidTtl
-     */
-    public function testSetMultipleInvalidTtl($ttl)
-    {
-        $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
-        if (isset($this->skippedTests[__FUNCTION__])) {
-            $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
-        }
-
-        $this->cache->setMultiple(['key' => 'value'], $ttl);
     }
 
     public function testNullOverwrite()

@@ -40,7 +40,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
      * @return bool|mixed|null
      * @throws InvalidArgumentException
      */
-    public function get($key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         $this->assertValidKey($key);
 
@@ -57,7 +57,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
         }
     }
 
-    public function set($key, $value, $ttl = null)
+    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
     {
         $this->assertValidKey($key);
 
@@ -75,19 +75,19 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
         return $this->cache->set($key, $value, $duration);
     }
 
-    public function delete($key)
+    public function delete(string $key): bool
     {
         $this->assertValidKey($key);
 
         return $this->has($key) ? $this->cache->delete($key) : true;
     }
 
-    public function clear()
+    public function clear(): bool
     {
         return $this->cache->flush();
     }
 
-    public function getMultiple($keys, $default = null)
+    public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
         if (!$keys instanceof \Traversable && !is_array($keys)) {
             throw new InvalidArgumentException(
@@ -103,7 +103,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
         return $data;
     }
 
-    public function setMultiple($values, $ttl = null)
+    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
         if (!$values instanceof \Traversable && !is_array($values)) {
             throw new InvalidArgumentException(
@@ -125,17 +125,13 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
         return $res;
     }
 
-    public function deleteMultiple($keys)
+    public function deleteMultiple(iterable $keys): bool
     {
         if ($keys instanceof \Traversable) {
             $keys = iterator_to_array($keys, false);
-        } else {
-            if (!is_array($keys)) {
-                throw new InvalidArgumentException(
-                    'Invalid keys: ' . var_export($keys, true) . '. Keys should be an array or Traversable of strings.'
-                );
-            }
         }
+
+        array_walk($keys, $this->assertValidKey(...));
 
         $res = true;
         array_map(function ($key) use (&$res) {
@@ -145,7 +141,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
         return $res;
     }
 
-    public function has($key)
+    public function has(string $key): bool
     {
         $this->assertValidKey($key);
 
@@ -156,7 +152,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
      * @param $key
      * @throws InvalidArgumentException
      */
-    protected function assertValidKey($key)
+    private function assertValidKey($key)
     {
         if (!is_string($key)) {
             throw new InvalidArgumentException('Invalid key: ' . var_export($key, true) . '. Key should be a string.');
@@ -180,7 +176,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
      * @param $ttl
      * @throws InvalidArgumentException
      */
-    protected function assertValidTtl($ttl)
+    private function assertValidTtl($ttl)
     {
         if ($ttl !== null && !is_int($ttl) && !$ttl instanceof \DateInterval) {
             $error = 'Invalid time: ' . serialize($ttl) . '. Must be integer or instance of DateInterval.';
@@ -193,7 +189,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
      * @return false|int
      * @throws InvalidArgumentException
      */
-    protected function toSeconds($ttl)
+    private function toSeconds($ttl)
     {
         $this->assertValidTtl($ttl);
 
