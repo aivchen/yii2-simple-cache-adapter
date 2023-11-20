@@ -10,7 +10,7 @@ use Wearesho\SimpleCache\Bootstrap;
 
 class BootstrapTest extends TestCase
 {
-    public function testBootstrap()
+    public function testBootstrap(): void
     {
         $this->assertFalse(\Yii::$container->has(CacheInterface::class));
         $app = $this->createPartialMock(\yii\console\Application::class, []);

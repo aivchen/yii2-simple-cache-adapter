@@ -28,9 +28,9 @@ abstract class BaseTestCase extends TestCase
     /**
      * Data provider for invalid keys.
      *
-     * @return array
+     * @return list<list{string}>
      */
-    public static function invalidKeys()
+    public static function invalidKeys(): array
     {
         return [
             [''],
@@ -50,9 +50,9 @@ abstract class BaseTestCase extends TestCase
     /**
      * Data provider for valid keys.
      *
-     * @return array
+     * @return list<list{string}>
      */
-    public static function validKeys()
+    public static function validKeys(): array
     {
         return [
             ['AbC19_.'],
@@ -63,9 +63,8 @@ abstract class BaseTestCase extends TestCase
     /**
      * Data provider for valid data to store.
      *
-     * @return array
      */
-    public static function validData()
+    public static function validData(): array
     {
         return [
             ['AbC19_.'],
@@ -78,7 +77,7 @@ abstract class BaseTestCase extends TestCase
         ];
     }
 
-    public function testSet()
+    public function testSet(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -89,7 +88,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertEquals('value', $this->cache->get('key'));
     }
 
-    public function testSetTtl()
+    public function testSetTtl(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -107,7 +106,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertNull($this->cache->get('key2'), 'Value must expire after ttl.');
     }
 
-    public function testSetExpiredTtl()
+    public function testSetExpiredTtl(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -123,7 +122,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertFalse($this->cache->has('key1'));
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -136,7 +135,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertEquals('value', $this->cache->get('key', 'foo'));
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -148,7 +147,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertNull($this->cache->get('key'), 'Values must be deleted on delete()');
     }
 
-    public function testClear()
+    public function testClear(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -156,11 +155,12 @@ abstract class BaseTestCase extends TestCase
 
         $this->assertTrue($this->cache->clear(), 'Clearing an empty cache should return true');
         $this->cache->set('key', 'value');
+        /** @psalm-suppress RedundantConditionGivenDocblockType */
         $this->assertTrue($this->cache->clear(), 'Delete must return true on success');
         $this->assertNull($this->cache->get('key'), 'Values must be deleted on clear()');
     }
 
-    public function testSetMultiple()
+    public function testSetMultiple(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -176,7 +176,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertEquals('value0', $this->cache->get('k0'));
     }
 
-    public function testSetMultipleTtl()
+    public function testSetMultipleTtl(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -195,7 +195,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertNull($this->cache->get('key4'), 'Value must expire after ttl.');
     }
 
-    public function testSetMultipleExpiredTtl()
+    public function testSetMultipleExpiredTtl(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -206,13 +206,13 @@ abstract class BaseTestCase extends TestCase
         $this->assertNull($this->cache->get('key1'));
     }
 
-    public function testSetMultipleWithGenerator()
+    public function testSetMultipleWithGenerator(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
         }
 
-        $gen = function () {
+        $gen = static function (): \Generator {
             yield 'key0' => 'value0';
             yield 'key1' => 'value1';
         };
@@ -222,7 +222,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertEquals('value1', $this->cache->get('key1'));
     }
 
-    public function testGetMultiple()
+    public function testGetMultiple(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -252,13 +252,13 @@ abstract class BaseTestCase extends TestCase
         $this->assertSame(['key2', 'key3', 'key4'], $keys);
     }
 
-    public function testGetMultipleWithGenerator()
+    public function testGetMultipleWithGenerator(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
         }
 
-        $gen = function () {
+        $gen = static function (): \Generator {
             yield 1 => 'key0';
             yield 1 => 'key1';
         };
@@ -282,7 +282,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertNull($this->cache->get('key1'));
     }
 
-    public function testDeleteMultiple()
+    public function testDeleteMultiple(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -301,13 +301,13 @@ abstract class BaseTestCase extends TestCase
         $this->assertNull($this->cache->get('key1'), 'Values must be deleted on deleteMultiple()');
     }
 
-    public function testDeleteMultipleGenerator()
+    public function testDeleteMultipleGenerator(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
         }
 
-        $gen = function () {
+        $gen = static function (): \Generator {
             yield 1 => 'key0';
             yield 1 => 'key1';
         };
@@ -318,7 +318,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertNull($this->cache->get('key1'), 'Values must be deleted on deleteMultiple()');
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -332,7 +332,7 @@ abstract class BaseTestCase extends TestCase
     /**
      * @dataProvider invalidKeys
      */
-    public function testGetInvalidKeys($key)
+    public function testGetInvalidKeys(string $key): void
     {
         $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
         if (isset($this->skippedTests[__FUNCTION__])) {
@@ -345,7 +345,7 @@ abstract class BaseTestCase extends TestCase
     /**
      * @dataProvider invalidKeys
      */
-    public function testGetMultipleInvalidKeys($key)
+    public function testGetMultipleInvalidKeys(string $key): void
     {
         $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
         if (isset($this->skippedTests[__FUNCTION__])) {
@@ -358,7 +358,7 @@ abstract class BaseTestCase extends TestCase
     /**
      * @dataProvider invalidKeys
      */
-    public function testSetInvalidKeys($key)
+    public function testSetInvalidKeys(string $key): void
     {
         $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
         if (isset($this->skippedTests[__FUNCTION__])) {
@@ -371,18 +371,14 @@ abstract class BaseTestCase extends TestCase
     /**
      * @dataProvider invalidKeys
      */
-    public function testSetMultipleInvalidKeys($key)
+    public function testSetMultipleInvalidKeys(string $key): void
     {
         $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
         }
 
-        if (is_int($key)) {
-            $this->markTestSkipped('As keys, strings are always casted to ints so they should be accepted');
-        }
-
-        $values = function () use ($key) {
+        $values = static function () use ($key): \Generator {
             yield 'key1' => 'foo';
             yield $key => 'bar';
             yield 'key2' => 'baz';
@@ -393,7 +389,7 @@ abstract class BaseTestCase extends TestCase
     /**
      * @dataProvider invalidKeys
      */
-    public function testHasInvalidKeys($key)
+    public function testHasInvalidKeys(string $key): void
     {
         $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
         if (isset($this->skippedTests[__FUNCTION__])) {
@@ -406,7 +402,7 @@ abstract class BaseTestCase extends TestCase
     /**
      * @dataProvider invalidKeys
      */
-    public function testDeleteInvalidKeys($key)
+    public function testDeleteInvalidKeys(string $key): void
     {
         $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
         if (isset($this->skippedTests[__FUNCTION__])) {
@@ -419,7 +415,7 @@ abstract class BaseTestCase extends TestCase
     /**
      * @dataProvider invalidKeys
      */
-    public function testDeleteMultipleInvalidKeys($key)
+    public function testDeleteMultipleInvalidKeys(string $key): void
     {
         $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
         if (isset($this->skippedTests[__FUNCTION__])) {
@@ -429,7 +425,7 @@ abstract class BaseTestCase extends TestCase
         $this->cache->deleteMultiple(['key1', $key, 'key2']);
     }
 
-    public function testNullOverwrite()
+    public function testNullOverwrite(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -441,7 +437,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertNull($this->cache->get('key'), 'Setting null to a key must overwrite previous value');
     }
 
-    public function testDataTypeString()
+    public function testDataTypeString(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -450,10 +446,9 @@ abstract class BaseTestCase extends TestCase
         $this->cache->set('key', '5');
         $result = $this->cache->get('key');
         $this->assertTrue('5' === $result, 'Wrong data type. If we store a string we must get an string back.');
-        $this->assertTrue(is_string($result), 'Wrong data type. If we store a string we must get an string back.');
     }
 
-    public function testDataTypeInteger()
+    public function testDataTypeInteger(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -462,10 +457,9 @@ abstract class BaseTestCase extends TestCase
         $this->cache->set('key', 5);
         $result = $this->cache->get('key');
         $this->assertTrue(5 === $result, 'Wrong data type. If we store an int we must get an int back.');
-        $this->assertTrue(is_int($result), 'Wrong data type. If we store an int we must get an int back.');
     }
 
-    public function testDataTypeFloat()
+    public function testDataTypeFloat(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -478,7 +472,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertEquals($float, $result);
     }
 
-    public function testDataTypeBoolean()
+    public function testDataTypeBoolean(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -491,7 +485,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertTrue($this->cache->has('key'), 'has() should return true when true are stored. ');
     }
 
-    public function testDataTypeArray()
+    public function testDataTypeArray(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -504,7 +498,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertEquals($array, $result);
     }
 
-    public function testDataTypeObject()
+    public function testDataTypeObject(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -521,7 +515,7 @@ abstract class BaseTestCase extends TestCase
     /**
      * @dataProvider validKeys
      */
-    public function testSetValidKeys($key)
+    public function testSetValidKeys(string $key): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -534,7 +528,7 @@ abstract class BaseTestCase extends TestCase
     /**
      * @dataProvider validKeys
      */
-    public function testSetMultipleValidKeys($key)
+    public function testSetMultipleValidKeys(string $key): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -554,7 +548,7 @@ abstract class BaseTestCase extends TestCase
     /**
      * @dataProvider validData
      */
-    public function testSetValidData($data)
+    public function testSetValidData(mixed $data): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -567,7 +561,7 @@ abstract class BaseTestCase extends TestCase
     /**
      * @dataProvider validData
      */
-    public function testSetMultipleValidData($data)
+    public function testSetMultipleValidData(mixed $data): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -583,7 +577,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertSame(['key'], $keys);
     }
 
-    public function testObjectAsDefaultValue()
+    public function testObjectAsDefaultValue(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
@@ -594,7 +588,7 @@ abstract class BaseTestCase extends TestCase
         $this->assertEquals($obj, $this->cache->get('key', $obj));
     }
 
-    public function testObjectDoesNotChangeInCache()
+    public function testObjectDoesNotChangeInCache(): void
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);

@@ -17,7 +17,9 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
 {
     public const INVALID_KEY_CHARACTER = '{}()/\@:';
 
-    public string|array|caching\CacheInterface $cache = 'cache';
+    public string|array $componentId = 'cache';
+
+    public caching\CacheInterface $cache;
 
     /**
      * @throws base\InvalidConfigException
@@ -26,13 +28,13 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
     {
         parent::init();
 
-        $this->cache = di\Instance::ensure($this->cache, caching\CacheInterface::class);
+        /** @var caching\CacheInterface */
+        $this->cache = di\Instance::ensure($this->componentId, caching\CacheInterface::class);
     }
 
     /**
      * Cache::get() return false if the value is not in the cache or expired, but PSR-16 return $default(null)
      *
-     * @param null $default
      * @return bool|mixed|null
      * @throws InvalidArgumentException
      */
@@ -81,12 +83,6 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
 
     public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
-        if (!$keys instanceof \Traversable && !is_array($keys)) {
-            throw new InvalidArgumentException(
-                'Invalid keys: ' . var_export($keys, true) . '. Keys should be an array or Traversable of strings.'
-            );
-        }
-
         $data = [];
         foreach ($keys as $key) {
             $data[$key] = $this->get($key, $default);
@@ -97,12 +93,6 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
 
     public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
-        if (!$values instanceof \Traversable && !is_array($values)) {
-            throw new InvalidArgumentException(
-                'Invalid keys: ' . var_export($values, true) . '. Keys should be an array or Traversable of strings.'
-            );
-        }
-
         $pairs = [];
         foreach ($values as $key => $value) {
             $this->assertValidKey($key);
@@ -143,12 +133,8 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
     /**
      * @throws InvalidArgumentException
      */
-    private function assertValidKey($key): void
+    private function assertValidKey(string $key): void
     {
-        if (!is_string($key)) {
-            throw new InvalidArgumentException('Invalid key: ' . var_export($key, true) . '. Key should be a string.');
-        }
-
         if ($key === '') {
             throw new InvalidArgumentException('Invalid key. Key should not be empty.');
         }
@@ -163,24 +149,8 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
         }
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
-    private function assertValidTtl($ttl): void
+    private function toSeconds(null|int|\DateInterval $ttl): false|int
     {
-        if ($ttl !== null && !is_int($ttl) && !$ttl instanceof \DateInterval) {
-            $error = 'Invalid time: ' . serialize($ttl) . '. Must be integer or instance of DateInterval.';
-            throw new InvalidArgumentException($error);
-        }
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    private function toSeconds($ttl): false|int
-    {
-        $this->assertValidTtl($ttl);
-
         if ($ttl === null) {
             // 0 means forever in Yii 2 cache
             return 0;

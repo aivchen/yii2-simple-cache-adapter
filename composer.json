@@ -55,6 +55,6 @@
     "checkcs": "./vendor/bin/php-cs-fixer fix --dry-run --diff",
     "fixcs": "./vendor/bin/php-cs-fixer fix",
     "test": "./vendor/bin/phpunit",
-    "psalm": "./vendor/bin/psalm"
+    "psalm": "./vendor/bin/psalm --no-diff"
   }
 }

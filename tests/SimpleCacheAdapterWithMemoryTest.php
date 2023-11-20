@@ -15,7 +15,7 @@ class SimpleCacheAdapterWithMemoryTest extends BaseTestCase
     protected function createSimpleCache(): CacheInterface
     {
         return new SimpleCache\Adapter([
-            'cache' => [
+            'componentId' => [
                 'class' => caching\ArrayCache::class,
             ],
         ]);
