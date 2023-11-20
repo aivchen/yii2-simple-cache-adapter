@@ -6,8 +6,7 @@
 
 An Adapter for SimpleCache (PSR-16) to Yii2 cache
 
-This library originally developed by [devonliu02](https://github.com/devonliu02),
-now maintained by [Wearesho Team](https://wearesho.com)
+This library originally developed by [devonliu02](https://github.com/devonliu02) and [Wearesho Team](https://wearesho.com)
 
 ## Installation
 
@@ -33,6 +32,7 @@ $customAdapter = new SimpleCache\Adapter([
 ```
 
 ## Contributors
+- [Andrew Ivchenkov](mailto:and.ivchenkov@gmail.com)
 - [Alexander Letnikow](mailto:reclamme@gmail.com)
 - [devonliu02](https://github.com/devonliu02)
 
