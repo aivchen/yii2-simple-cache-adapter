@@ -25,8 +25,8 @@
   "require-dev": {
     "cache/integration-tests": "^0.17.0",
     "ergebnis/composer-normalize": "^2.28",
+    "friendsofphp/php-cs-fixer": "^3.38",
     "phpunit/phpunit": "^10.4",
-    "squizlabs/php_codesniffer": "^3.2",
     "yidas/yii2-composer-bower-skip": "^2.0"
   },
   "autoload": {
@@ -51,8 +51,8 @@
     "sort-packages": true
   },
   "scripts": {
-    "lint": "./vendor/bin/phpcs --standard=PSR2 ./src ./tests",
-    "phpcbf": "./vendor/bin/phpcbf --standard=PSR2 ./src ./tests",
+    "checkcs": "./vendor/bin/php-cs-fixer fix --dry-run --diff",
+    "fixcs": "./vendor/bin/php-cs-fixer fix",
     "test": "./vendor/bin/phpunit"
   }
 }

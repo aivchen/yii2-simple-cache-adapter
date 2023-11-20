@@ -47,4 +47,4 @@ jobs:
       run: composer run-script test
 
     - name: Check code style
-      run: composer run-script lint
+      run: composer run-script checkcs
