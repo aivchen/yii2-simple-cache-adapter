@@ -17,9 +17,9 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
 {
     public const INVALID_KEY_CHARACTER = '{}()/\@:';
 
-    public string|array $componentId = 'cache';
+    public string|array $cache = 'cache';
 
-    public caching\CacheInterface $cache;
+    public caching\CacheInterface $cacheObj;
 
     /**
      * @throws base\InvalidConfigException
@@ -29,7 +29,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
         parent::init();
 
         /** @var caching\CacheInterface */
-        $this->cache = di\Instance::ensure($this->componentId, caching\CacheInterface::class);
+        $this->cacheObj = di\Instance::ensure($this->cache, caching\CacheInterface::class);
     }
 
     /**
@@ -42,7 +42,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
     {
         $this->assertValidKey($key);
 
-        $data = $this->cache->get($key);
+        $data = $this->cacheObj->get($key);
 
         if ($data === false) {
             return $default;
@@ -66,19 +66,19 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
         // case FALSE to null so we can detect that if
         // the cache miss/expired or it did set the FALSE value into cache
         $value = $value === false ? null : $value;
-        return $this->cache->set($key, $value, $duration);
+        return $this->cacheObj->set($key, $value, $duration);
     }
 
     public function delete(string $key): bool
     {
         $this->assertValidKey($key);
 
-        return $this->has($key) ? $this->cache->delete($key) : true;
+        return $this->has($key) ? $this->cacheObj->delete($key) : true;
     }
 
     public function clear(): bool
     {
-        return $this->cache->flush();
+        return $this->cacheObj->flush();
     }
 
     public function getMultiple(iterable $keys, mixed $default = null): iterable
@@ -127,7 +127,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
     {
         $this->assertValidKey($key);
 
-        return $this->cache->exists($key);
+        return $this->cacheObj->exists($key);
     }
 
     /**

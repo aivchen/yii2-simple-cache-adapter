@@ -15,7 +15,7 @@ class SimpleCacheAdapterWithFileTest extends BaseTestCase
     protected function createSimpleCache(): CacheInterface
     {
         return new SimpleCache\Adapter([
-            'componentId' => [
+            'cache' => [
                 'class' => caching\FileCache::class,
                 'cachePath' => __DIR__ . DIRECTORY_SEPARATOR . 'runtime',
             ],
