@@ -9,5 +9,6 @@ return (new PhpCsFixer\Config())
         '@PER-CS' => true,
         '@PER-CS:risky' => true,
         '@PHP82Migration' => true,
+        'no_superfluous_phpdoc_tags'=>true
     ])
     ->setFinder($finder);

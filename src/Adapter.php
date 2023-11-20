@@ -32,7 +32,6 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
     /**
      * Cache::get() return false if the value is not in the cache or expired, but PSR-16 return $default(null)
      *
-     * @param string $key
      * @param null $default
      * @return bool|mixed|null
      * @throws InvalidArgumentException
@@ -142,7 +141,6 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
     }
 
     /**
-     * @param $key
      * @throws InvalidArgumentException
      */
     private function assertValidKey($key): void
@@ -166,7 +164,6 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
     }
 
     /**
-     * @param $ttl
      * @throws InvalidArgumentException
      */
     private function assertValidTtl($ttl): void
@@ -178,8 +175,6 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
     }
 
     /**
-     * @param $ttl
-     * @return false|int
      * @throws InvalidArgumentException
      */
     private function toSeconds($ttl): false|int
