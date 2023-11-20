@@ -48,3 +48,6 @@ jobs:
 
     - name: Check code style
       run: composer run-script checkcs
+
+    - name: Static Analyse
+      run: composer run-script psalm

@@ -352,7 +352,7 @@ abstract class BaseTestCase extends TestCase
             $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
         }
 
-        $result = $this->cache->getMultiple(['key1', $key, 'key2']);
+        $this->cache->getMultiple(['key1', $key, 'key2']);
     }
 
     /**
