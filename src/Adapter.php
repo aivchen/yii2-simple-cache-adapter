@@ -17,10 +17,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
 {
     public const INVALID_KEY_CHARACTER = '{}()/\@:';
 
-    /**
-     * @var caching\CacheInterface|array|string definition
-     */
-    public $cache = 'cache';
+    public string|array|caching\CacheInterface $cache = 'cache';
 
     /**
      * @throws base\InvalidConfigException
@@ -48,13 +45,9 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
 
         if ($data === false) {
             return $default;
-        } else {
-            if ($data === null) {
-                return false;
-            } else {
-                return $data;
-            }
         }
+
+        return $data ?? false;
     }
 
     public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
@@ -71,7 +64,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
 
         // case FALSE to null so we can detect that if
         // the cache miss/expired or it did set the FALSE value into cache
-        $value = $value == false ? null : $value;
+        $value = $value === false ? null : $value;
         return $this->cache->set($key, $value, $duration);
     }
 
@@ -152,7 +145,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
      * @param $key
      * @throws InvalidArgumentException
      */
-    private function assertValidKey($key)
+    private function assertValidKey($key): void
     {
         if (!is_string($key)) {
             throw new InvalidArgumentException('Invalid key: ' . var_export($key, true) . '. Key should be a string.');
@@ -176,7 +169,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
      * @param $ttl
      * @throws InvalidArgumentException
      */
-    private function assertValidTtl($ttl)
+    private function assertValidTtl($ttl): void
     {
         if ($ttl !== null && !is_int($ttl) && !$ttl instanceof \DateInterval) {
             $error = 'Invalid time: ' . serialize($ttl) . '. Must be integer or instance of DateInterval.';
@@ -189,7 +182,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
      * @return false|int
      * @throws InvalidArgumentException
      */
-    private function toSeconds($ttl)
+    private function toSeconds($ttl): false|int
     {
         $this->assertValidTtl($ttl);
 
