@@ -5,7 +5,7 @@ namespace Wearesho\SimpleCache\Tests;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
 
-abstract class SimpleCacheTest extends TestCase
+abstract class BaseTestCase extends TestCase
 {
     protected array $skippedTests = [];
 

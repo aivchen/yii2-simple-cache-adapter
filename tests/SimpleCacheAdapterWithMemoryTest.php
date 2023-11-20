@@ -6,7 +6,7 @@ use Psr\SimpleCache\CacheInterface;
 use Wearesho\SimpleCache;
 use yii\caching;
 
-class SimpleCacheAdapterWithMemoryTest extends SimpleCacheTest
+class SimpleCacheAdapterWithMemoryTest extends BaseTestCase
 {
     protected array $skippedTests = [
         'testSetMultipleWithIntegerArrayKey' => '',
