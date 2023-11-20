@@ -47,9 +47,6 @@
       "yiisoft/yii2-composer": false,
       "ergebnis/composer-normalize": true
     },
-    "platform": {
-      "php": "7.4"
-    },
     "process-timeout": 1800,
     "sort-packages": true
   },
