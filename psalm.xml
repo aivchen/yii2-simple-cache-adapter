@@ -5,10 +5,17 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        checkForThrowsDocblock="true"
+        checkForThrowsInGlobalScope="true"
+        disableSuppressAll="true"
+        ensureArrayStringOffsetsExist="true"
         findUnusedBaselineEntry="true"
         findUnusedCode="false"
         findUnusedVariablesAndParams="true"
         findUnusedPsalmSuppress="true"
+        memoizeMethodCallResults="true"
+        reportMixedIssues="true"
+        sealAllMethods="true"
         cacheDirectory=".psalm.cache"
 >
     <projectFiles>
@@ -18,6 +25,14 @@
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <MissingThrowsDocblock>
+            <errorLevel type="suppress">
+                <directory name="tests"/>
+            </errorLevel>
+        </MissingThrowsDocblock>
+        <MixedAssignment errorLevel="suppress"/>
+    </issueHandlers>
     <plugins>
         <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin"/>
     </plugins>
