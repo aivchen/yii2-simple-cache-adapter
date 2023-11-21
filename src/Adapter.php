@@ -48,7 +48,11 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
             return $default;
         }
 
-        return $data ?? false;
+        if ($data instanceof FalseValue) {
+            return false;
+        }
+
+        return $data;
     }
 
     public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
@@ -59,13 +63,9 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
             return $this->delete($key);
         }
 
-        if ($value === null) {
-            return $this->delete($key);
-        }
-
-        // case FALSE to null so we can detect that if
-        // the cache miss/expired or it did set the FALSE value into cache
-        $value = $value === false ? null : $value;
+        // case FALSE to FalseValue, so we can detect that if
+        // the cache miss/expired, or it did set the FALSE value into cache
+        $value = $value === false ? new FalseValue() : $value;
         return $this->cacheObj->set($key, $value, $duration);
     }
 

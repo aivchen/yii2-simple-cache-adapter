@@ -350,6 +350,13 @@ abstract class BaseTestCase extends TestCase
         $this->assertNull($this->cache->get('key'), 'Setting null to a key must overwrite previous value');
     }
 
+    public function testNullType(): void
+    {
+        $this->cache->set('key', null);
+        $this->assertTrue($this->cache->has('key'), 'has() should return true when null is stored.');
+        $this->assertNull($this->cache->get('key'), 'Wrong data type. If we store null we must get null back.');
+    }
+
     public function testDataTypeString(): void
     {
         $this->cache->set('key', '5');
