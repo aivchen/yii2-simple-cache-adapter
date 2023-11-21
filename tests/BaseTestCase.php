@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Wearesho\SimpleCache\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
+use Psr\SimpleCache\InvalidArgumentException;
 
 abstract class BaseTestCase extends TestCase
 {
@@ -267,42 +269,34 @@ abstract class BaseTestCase extends TestCase
         $this->assertTrue($this->cache->has('key0'));
     }
 
-    /**
-     * @dataProvider invalidKeys
-     */
+    #[DataProvider('invalidKeys')]
     public function testGetInvalidKeys(string $key): void
     {
-        $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->cache->get($key);
     }
 
-    /**
-     * @dataProvider invalidKeys
-     */
+    #[DataProvider('invalidKeys')]
     public function testGetMultipleInvalidKeys(string $key): void
     {
-        $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->cache->getMultiple(['key1', $key, 'key2']);
     }
 
-    /**
-     * @dataProvider invalidKeys
-     */
+    #[DataProvider('invalidKeys')]
     public function testSetInvalidKeys(string $key): void
     {
-        $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->cache->set($key, 'foobar');
     }
 
-    /**
-     * @dataProvider invalidKeys
-     */
+    #[DataProvider('invalidKeys')]
     public function testSetMultipleInvalidKeys(string $key): void
     {
-        $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $values = static function () use ($key): \Generator {
             yield 'key1' => 'foo';
@@ -312,32 +306,26 @@ abstract class BaseTestCase extends TestCase
         $this->cache->setMultiple($values());
     }
 
-    /**
-     * @dataProvider invalidKeys
-     */
+    #[DataProvider('invalidKeys')]
     public function testHasInvalidKeys(string $key): void
     {
-        $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->cache->has($key);
     }
 
-    /**
-     * @dataProvider invalidKeys
-     */
+    #[DataProvider('invalidKeys')]
     public function testDeleteInvalidKeys(string $key): void
     {
-        $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->cache->delete($key);
     }
 
-    /**
-     * @dataProvider invalidKeys
-     */
+    #[DataProvider('invalidKeys')]
     public function testDeleteMultipleInvalidKeys(string $key): void
     {
-        $this->expectException(\Psr\SimpleCache\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->cache->deleteMultiple(['key1', $key, 'key2']);
     }
@@ -350,76 +338,40 @@ abstract class BaseTestCase extends TestCase
         $this->assertNull($this->cache->get('key'), 'Setting null to a key must overwrite previous value');
     }
 
-    public function testNullType(): void
+    public static function byTypeCases(): array
     {
-        $this->cache->set('key', null);
-        $this->assertTrue($this->cache->has('key'), 'has() should return true when null is stored.');
-        $this->assertNull($this->cache->get('key'), 'Wrong data type. If we store null we must get null back.');
+        return [
+            [null],
+            ['5'],
+            [5],
+            [5],
+            [1.23456789],
+            [true],
+            [false],
+            ['a' => 'foo', 2 => 'bar'],
+            [(object)['a' => 'foo']],
+        ];
     }
 
-    public function testDataTypeString(): void
+    #[DataProvider('byTypeCases')]
+    public function testByType(mixed $value): void
     {
-        $this->cache->set('key', '5');
-        $result = $this->cache->get('key');
-        $this->assertTrue('5' === $result, 'Wrong data type. If we store a string we must get an string back.');
+        $this->cache->set('key', $value);
+        $has = $this->cache->has('key');
+        $actual = $this->cache->get('key');
+
+        $this->assertTrue($has, sprintf('has() should return true when %s is stored.', gettype($value)));
+        $this->assertEquals($value, $actual, 'Wrong data type. If we store null we must get null back.');
     }
 
-    public function testDataTypeInteger(): void
-    {
-        $this->cache->set('key', 5);
-        $result = $this->cache->get('key');
-        $this->assertTrue(5 === $result, 'Wrong data type. If we store an int we must get an int back.');
-    }
-
-    public function testDataTypeFloat(): void
-    {
-        $float = 1.23456789;
-        $this->cache->set('key', $float);
-        $result = $this->cache->get('key');
-        $this->assertTrue(is_float($result), 'Wrong data type. If we store float we must get an float back.');
-        $this->assertEquals($float, $result);
-    }
-
-    public function testDataTypeBoolean(): void
-    {
-        $this->cache->set('key', false);
-        $result = $this->cache->get('key');
-        $this->assertTrue(is_bool($result), 'Wrong data type. If we store boolean we must get an boolean back.');
-        $this->assertFalse($result);
-        $this->assertTrue($this->cache->has('key'), 'has() should return true when true are stored. ');
-    }
-
-    public function testDataTypeArray(): void
-    {
-        $array = ['a' => 'foo', 2 => 'bar'];
-        $this->cache->set('key', $array);
-        $result = $this->cache->get('key');
-        $this->assertTrue(is_array($result), 'Wrong data type. If we store array we must get an array back.');
-        $this->assertEquals($array, $result);
-    }
-
-    public function testDataTypeObject(): void
-    {
-        $object = new \stdClass();
-        $object->a = 'foo';
-        $this->cache->set('key', $object);
-        $result = $this->cache->get('key');
-        $this->assertTrue(is_object($result), 'Wrong data type. If we store object we must get an object back.');
-        $this->assertEquals($object, $result);
-    }
-
-    /**
-     * @dataProvider validKeys
-     */
+    #[DataProvider('validKeys')]
     public function testSetValidKeys(string $key): void
     {
         $this->cache->set($key, 'foobar');
         $this->assertEquals('foobar', $this->cache->get($key));
     }
 
-    /**
-     * @dataProvider validKeys
-     */
+    #[DataProvider('validKeys')]
     public function testSetMultipleValidKeys(string $key): void
     {
         $this->cache->setMultiple([$key => 'foobar']);
@@ -433,18 +385,14 @@ abstract class BaseTestCase extends TestCase
         $this->assertSame([$key], $keys);
     }
 
-    /**
-     * @dataProvider validData
-     */
+    #[DataProvider('validData')]
     public function testSetValidData(mixed $data): void
     {
         $this->cache->set('key', $data);
         $this->assertEquals($data, $this->cache->get('key'));
     }
 
-    /**
-     * @dataProvider validData
-     */
+    #[DataProvider('validData')]
     public function testSetMultipleValidData(mixed $data): void
     {
         $this->cache->setMultiple(['key' => $data]);
