@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Wearesho\SimpleCache\Tests;
+namespace Aivchen\SimpleCache\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
-use Wearesho\SimpleCache\Bootstrap;
+use Aivchen\SimpleCache\Bootstrap;
 
 class BootstrapTest extends TestCase
 {

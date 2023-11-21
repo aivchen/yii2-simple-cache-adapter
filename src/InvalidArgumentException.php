@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wearesho\SimpleCache;
+namespace Aivchen\SimpleCache;
 
 use yii\base;
 

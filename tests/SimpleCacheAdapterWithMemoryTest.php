@@ -1,9 +1,9 @@
 <?php
 
-namespace Wearesho\SimpleCache\Tests;
+namespace Aivchen\SimpleCache\Tests;
 
 use Psr\SimpleCache\CacheInterface;
-use Wearesho\SimpleCache;
+use Aivchen\SimpleCache;
 use yii\caching;
 
 class SimpleCacheAdapterWithMemoryTest extends BaseTestCase

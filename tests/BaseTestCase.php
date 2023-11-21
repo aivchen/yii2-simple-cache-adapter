@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wearesho\SimpleCache\Tests;
+namespace Aivchen\SimpleCache\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

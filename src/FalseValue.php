@@ -1,5 +1,5 @@
 <?php
 
-namespace Wearesho\SimpleCache;
+namespace Aivchen\SimpleCache;
 
 class FalseValue {}

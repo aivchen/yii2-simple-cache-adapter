@@ -32,12 +32,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Wearesho\\SimpleCache\\": "src"
+      "Aivchen\\SimpleCache\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Wearesho\\SimpleCache\\Tests\\": "tests"
+      "Aivchen\\SimpleCache\\Tests\\": "tests"
     },
     "files": [
       "vendor/yiisoft/yii2/Yii.php"
@@ -54,7 +54,7 @@
   "scripts": {
     "checkcs": "./vendor/bin/php-cs-fixer fix --dry-run --diff",
     "fixcs": "./vendor/bin/php-cs-fixer fix",
-    "test": "./vendor/bin/phpunit",
-    "psalm": "./vendor/bin/psalm --no-diff"
+    "psalm": "./vendor/bin/psalm --no-diff",
+    "test": "./vendor/bin/phpunit"
   }
 }
