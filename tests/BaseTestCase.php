@@ -420,6 +420,7 @@ abstract class BaseTestCase extends TestCase
         $obj->foo = 'changed';
 
         $cacheObject = $this->cache->get('key');
+        $this->assertIsObject($cacheObject);
         $this->assertEquals('value', $cacheObject->foo, 'Object in cache should not have their values changed.');
     }
 }

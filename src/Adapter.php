@@ -73,7 +73,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
     {
         $this->assertValidKey($key);
 
-        return $this->has($key) ? $this->cacheObj->delete($key) : true;
+        return !$this->has($key) || $this->cacheObj->delete($key);
     }
 
     public function clear(): bool
@@ -91,6 +91,10 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
         return $data;
     }
 
+    /**
+     * @psalm-suppress MoreSpecificImplementedParamType
+     * @param iterable<string, mixed> $values
+     */
     public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
         $pairs = [];
@@ -115,12 +119,7 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
 
         array_walk($keys, $this->assertValidKey(...));
 
-        $res = true;
-        array_map(function ($key) use (&$res) {
-            $res = $res && $this->delete($key);
-        }, $keys);
-
-        return $res;
+        return array_reduce($keys, fn(bool $carry, string $key) => $carry && $this->delete($key), true);
     }
 
     public function has(string $key): bool
@@ -140,11 +139,11 @@ class Adapter extends base\Component implements SimpleCache\CacheInterface
         }
 
         // valid key according to PSR-16 rules
-        $invalid = preg_quote(static::INVALID_KEY_CHARACTER, '/');
+        $invalid = preg_quote(self::INVALID_KEY_CHARACTER, '/');
         if (preg_match('/[' . $invalid . ']/', $key)) {
             throw new InvalidArgumentException(
                 'Invalid key: ' . $key . '. Contains (a) character(s) reserved ' .
-                'for future extension: ' . static::INVALID_KEY_CHARACTER
+                'for future extension: ' . self::INVALID_KEY_CHARACTER
             );
         }
     }
