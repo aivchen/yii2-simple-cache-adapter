@@ -9,17 +9,13 @@ use yii\caching;
 use yii\di;
 use Psr\SimpleCache;
 
-/**
- * Class Adapter
- * @package Wearesho\SimpleCache
- */
-class Adapter extends base\Component implements SimpleCache\CacheInterface
+final class Adapter extends base\Component implements SimpleCache\CacheInterface
 {
-    public const INVALID_KEY_CHARACTER = '{}()/\@:';
-
     public string|array $cache = 'cache';
 
-    public caching\CacheInterface $cacheObj;
+    private const INVALID_KEY_CHARACTER = '{}()/\@:';
+
+    private caching\CacheInterface $cacheObj;
 
     /**
      * @throws base\InvalidConfigException
