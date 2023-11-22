@@ -54,3 +54,6 @@ jobs:
 
     - name: Static Analyse
       run: composer run-script psalm
+
+    - name: Rector
+      run: composer run-script rector-check
