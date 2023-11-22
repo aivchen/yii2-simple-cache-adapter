@@ -53,8 +53,8 @@
     "sort-packages": true
   },
   "scripts": {
-    "checkcs": "./vendor/bin/php-cs-fixer fix --dry-run --diff",
-    "fixcs": "./vendor/bin/php-cs-fixer fix",
+    "cs-check": "./vendor/bin/php-cs-fixer fix --dry-run --diff",
+    "cs-fix": "./vendor/bin/php-cs-fixer fix",
     "psalm": "./vendor/bin/psalm --no-diff",
     "rector-check": "./vendor/bin/rector process --dry-run",
     "rector-fix": "./vendor/bin/rector process --dry-run",

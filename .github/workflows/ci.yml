@@ -50,7 +50,7 @@ jobs:
       run: composer run-script test
 
     - name: Check code style
-      run: composer run-script checkcs
+      run: composer run-script cs-check
 
     - name: Static Analyse
       run: composer run-script psalm
