@@ -1,4 +1,5 @@
 # Yii2 SimpleCache adapter
+[![Latest Stable Version](http://poser.pugx.org/aivchen/yii2-simple-cache-adapter/v)](https://packagist.org/packages/aivchen/yii2-simple-cache-adapter) [![Total Downloads](http://poser.pugx.org/aivchen/yii2-simple-cache-adapter/downloads)](https://packagist.org/packages/aivchen/yii2-simple-cache-adapter) [![Latest Unstable Version](http://poser.pugx.org/aivchen/yii2-simple-cache-adapter/v/unstable)](https://packagist.org/packages/aivchen/yii2-simple-cache-adapter) [![License](http://poser.pugx.org/aivchen/yii2-simple-cache-adapter/license)](https://packagist.org/packages/aivchen/yii2-simple-cache-adapter) [![PHP Version Require](http://poser.pugx.org/aivchen/yii2-simple-cache-adapter/require/php)](https://packagist.org/packages/aivchen/yii2-simple-cache-adapter)
 
 An Adapter for SimpleCache (PSR-16) to Yii2 cache
 
