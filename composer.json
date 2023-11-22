@@ -55,6 +55,7 @@
   },
   "scripts": {
     "checks": [
+      "@composer-validate",
       "@composer-check",
       "@cs-check",
       "@rector-check",
@@ -62,6 +63,7 @@
       "@test"
     ],
     "composer-check": "@composer normalize --dry-run",
+    "composer-validate": "@composer validate --strict",
     "cs-check": "php-cs-fixer fix --dry-run --diff",
     "cs-fix": "php-cs-fixer fix",
     "psalm": "psalm --no-diff",
