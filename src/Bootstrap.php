@@ -7,7 +7,7 @@ namespace Aivchen\SimpleCache;
 use Psr\SimpleCache\CacheInterface;
 use yii\base;
 
-class Bootstrap implements base\BootstrapInterface
+final class Bootstrap implements base\BootstrapInterface
 {
     public function bootstrap($app): void
     {

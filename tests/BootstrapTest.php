@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
 use Aivchen\SimpleCache\Bootstrap;
 
-class BootstrapTest extends TestCase
+final class BootstrapTest extends TestCase
 {
     public function testBootstrap(): void
     {

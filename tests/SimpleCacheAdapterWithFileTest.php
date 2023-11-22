@@ -6,12 +6,8 @@ use Psr\SimpleCache\CacheInterface;
 use Aivchen\SimpleCache;
 use yii\caching;
 
-class SimpleCacheAdapterWithFileTest extends BaseTestCase
+final class SimpleCacheAdapterWithFileTest extends BaseTestCase
 {
-    protected array $skippedTests = [
-        'testSetMultipleWithIntegerArrayKey' => '',
-    ];
-
     protected function createSimpleCache(): CacheInterface
     {
         return new SimpleCache\Adapter([

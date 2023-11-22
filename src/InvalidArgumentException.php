@@ -6,4 +6,4 @@ namespace Aivchen\SimpleCache;
 
 use yii\base;
 
-class InvalidArgumentException extends base\Exception implements \Psr\SimpleCache\InvalidArgumentException {}
+final class InvalidArgumentException extends base\Exception implements \Psr\SimpleCache\InvalidArgumentException {}

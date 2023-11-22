@@ -62,7 +62,6 @@ abstract class BaseTestCase extends TestCase
 
     /**
      * Data provider for valid data to store.
-     *
      */
     public static function validData(): array
     {

@@ -23,8 +23,7 @@ final class Adapter extends base\Component implements SimpleCache\CacheInterface
     public function init(): void
     {
         parent::init();
-
-        /** @var caching\CacheInterface */
+        /** @psalm-suppress PropertyTypeCoercion cacheObj */
         $this->cacheObj = di\Instance::ensure($this->cache, caching\CacheInterface::class);
     }
 
@@ -68,8 +67,10 @@ final class Adapter extends base\Component implements SimpleCache\CacheInterface
     public function delete(string $key): bool
     {
         $this->assertValidKey($key);
-
-        return !$this->has($key) || $this->cacheObj->delete($key);
+        if (!$this->has($key)) {
+            return true;
+        }
+        return $this->cacheObj->delete($key);
     }
 
     public function clear(): bool
@@ -115,7 +116,7 @@ final class Adapter extends base\Component implements SimpleCache\CacheInterface
 
         array_walk($keys, $this->assertValidKey(...));
 
-        return array_reduce($keys, fn(bool $carry, string $key) => $carry && $this->delete($key), true);
+        return array_reduce($keys, fn(bool $carry, string $key): bool => $carry && $this->delete($key), true);
     }
 
     public function has(string $key): bool
@@ -151,11 +152,7 @@ final class Adapter extends base\Component implements SimpleCache\CacheInterface
             return 0;
         }
 
-        if (is_int($ttl)) {
-            $sec = $ttl;
-        } else {
-            $sec = ((new \DateTime())->add($ttl))->getTimestamp() - (new \DateTime())->getTimestamp();
-        }
+        $sec = is_int($ttl) ? $ttl : ((new \DateTime())->add($ttl))->getTimestamp() - (new \DateTime())->getTimestamp();
 
         return $sec > 0 ? $sec : false;
     }

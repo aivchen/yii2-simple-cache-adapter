@@ -2,4 +2,4 @@
 
 namespace Aivchen\SimpleCache;
 
-class FalseValue {}
+final class FalseValue {}
