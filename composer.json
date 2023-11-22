@@ -54,12 +54,22 @@
     "sort-packages": true
   },
   "scripts": {
-    "coverage-check": "./vendor/bin/coverage-check var/.phpunit.coverage/clover.xml 100",
-    "cs-check": "./vendor/bin/php-cs-fixer fix --dry-run --diff",
-    "cs-fix": "./vendor/bin/php-cs-fixer fix",
-    "psalm": "./vendor/bin/psalm --no-diff",
-    "rector-check": "./vendor/bin/rector process --dry-run",
-    "rector-fix": "./vendor/bin/rector process --dry-run",
-    "test": "./vendor/bin/phpunit"
+    "checks": [
+      "@composer-check",
+      "@cs-check",
+      "@rector-check",
+      "@psalm",
+      "@test"
+    ],
+    "composer-check": "@composer normalize --dry-run",
+    "cs-check": "php-cs-fixer fix --dry-run --diff",
+    "cs-fix": "php-cs-fixer fix",
+    "psalm": "psalm --no-diff",
+    "rector-check": "rector process --dry-run",
+    "rector-fix": "rector process --dry-run",
+    "test": [
+      "phpunit",
+      "coverage-check var/.phpunit.coverage/clover.xml 100"
+    ]
   }
 }

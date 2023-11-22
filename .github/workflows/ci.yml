@@ -44,19 +44,16 @@ jobs:
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: Run composer normalize
-      run: composer normalize --dry-run --diff
-
-    - name: Run test suite
-      run: composer run-script test
-
-    - name: Check code coverage
-      run: composer run-script coverage-check
+      run: composer run-script composer-check
 
     - name: Check code style
       run: composer run-script cs-check
 
-    - name: Static Analyse
-      run: composer run-script psalm
-
     - name: Rector
       run: composer run-script rector-check
+
+    - name: Psalm
+      run: composer run-script psalm
+
+    - name: Run test suite
+      run: composer run-script test
