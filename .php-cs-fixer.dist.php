@@ -5,6 +5,7 @@ $finder = (new PhpCsFixer\Finder())
 
 return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
+    ->setCacheFile(__DIR__ . '/var/.php-cs-fixer.cache')
     ->setRules([
         '@PER-CS' => true,
         '@PER-CS:risky' => true,

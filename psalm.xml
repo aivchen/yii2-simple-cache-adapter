@@ -16,7 +16,7 @@
         memoizeMethodCallResults="true"
         reportMixedIssues="true"
         sealAllMethods="true"
-        cacheDirectory=".psalm.cache"
+        cacheDirectory="var/.psalm.cache"
 >
     <projectFiles>
         <directory name="src"/>
