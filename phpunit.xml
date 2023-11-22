@@ -1,7 +1,12 @@
 <?xml version="1.0"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" colors="true"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.4/phpunit.xsd" cacheDirectory="var/.phpunit.cache">
-    <coverage/>
+    <coverage>
+        <report>
+            <html outputDirectory="var/.phpunit.coverage/html"/>
+            <clover outputFile="var/.phpunit.coverage/clover.xml"/>
+        </report>
+    </coverage>
     <testsuites>
         <testsuite name="Test Suite">
             <directory suffix="Test.php">./tests</directory>

@@ -49,6 +49,9 @@ jobs:
     - name: Run test suite
       run: composer run-script test
 
+    - name: Check code coverage
+      run: composer run-script coverage-check
+
     - name: Check code style
       run: composer run-script cs-check
 
